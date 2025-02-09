@@ -1,20 +1,15 @@
-import { AppDataSource } from "../data-source"
-import { User } from "../entity/User"
-import { Request, Response, Router } from "express"
-import bcrypt from "bcrypt"
-import dotenv from "dotenv"
 
-dotenv.config()
+import {Router } from "express"
+import UserController from "../controllers/user.controller"
 
-const userRepository = AppDataSource.getRepository(User)
 
 const userRouter = Router()
+const userController = new UserController()
 
-userRouter.get("/", async (req: Request, res: Response) => {
-  try {
-    const listUser = await userRepository.find()
-    res.status(200).json(listUser)
-  } catch (ex) {
-    res.status(500).send("Ocorreu um erro ao executar a solicitação")
-  }
-})
+userRouter.get("/", userController.userGetAll)
+
+userRouter.post("/", userController.userCreate)
+
+userRouter.post("/login", userController.userLogin)
+
+export default userRouter
