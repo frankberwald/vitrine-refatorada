@@ -43,30 +43,6 @@ class UserController {
     }
   }
 
-  userLogin = async (req: Request, res: Response) => {
-    const usuarioLogin = req.body
-
-    const user = await this.userRepository.findOne({
-      where: {
-        email: usuarioLogin.email
-      }
-    })
-
-    if (!user) {
-      res.status(400).json("Usuário não encontrado")
-      return
-    }
-
-    const salt = "jhsgafhsafgsaghf"
-
-    let isCorreto = await bcrypt.compare(usuarioLogin.password, user.password);
-
-    if (isCorreto) {
-    } else {
-      res.status(400).json("Usuário e/ou senha inválida(o)")
-      return
-    }
-  }
 
 }
 

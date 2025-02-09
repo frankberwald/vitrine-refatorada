@@ -10,6 +10,4 @@ userRouter.get("/", userController.userGetAll)
 
 userRouter.post("/", userController.userCreate)
 
-userRouter.post("/login", userController.userLogin)
-
 export default userRouter

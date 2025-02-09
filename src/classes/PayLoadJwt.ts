@@ -1,6 +1,6 @@
 import { Role } from "../entity/Role";
 class PayloadJwt {
-  firstName: string;
+  name: string;
   email: string;
   userId: number;
   roles:Role[]
