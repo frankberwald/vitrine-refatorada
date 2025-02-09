@@ -64,7 +64,7 @@ export class RbacController{
   listPermissionsByRole = async (req: Request, res: Response) => {
     try {
       const roles = await this.roleRepository.find({
-        relations: ["permissionss"]
+        relations: ["permissions"]
       })
       res.status(200).json(roles)
     } catch (ex) {
@@ -78,7 +78,7 @@ export class RbacController{
         permissionId: number,
         roleId: number
       }
-      if (!permissionId || roleId) {
+      if (!permissionId || !roleId) {
         res.status(400).json("As id's de permissão e role são obrigatórias!")
         return
       }
@@ -123,7 +123,7 @@ export class RbacController{
       }
       const role = await this.roleRepository.findOne({
         where: { id: roleId },
-        relations: ["user"]
+        relations: ["users"]
       })
       if(!role){
         res.status(400).json("Role inválida")

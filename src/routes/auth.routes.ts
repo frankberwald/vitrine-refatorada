@@ -6,6 +6,9 @@ import { AppDataSource } from "../data-source"
 import { User } from "../entity/User";
 import UserLogin from "../classes/UserLogin";
 import PayloadJwt from "../classes/PayLoadJwt";
+import dotenv from "dotenv"
+
+dotenv.config()
 
 const userRepository = AppDataSource.getRepository(User);
 
@@ -16,7 +19,7 @@ authRouter.post("/", async (req:Request, res:Response)=> {
     const userLogin = req.body as UserLogin
     const userEntity = await userRepository.findOne({
       where: {
-        email: userLogin.email,
+        email: userLogin.email
       },
       relations: ["roles", "roles.permissions"],
       select:  {
@@ -32,6 +35,7 @@ authRouter.post("/", async (req:Request, res:Response)=> {
     })
 
     if(!userEntity){
+      console.log("Usuário não encontrado");
       res.status(400).json("Credenciais inválidas")
       return
     }
@@ -39,6 +43,7 @@ authRouter.post("/", async (req:Request, res:Response)=> {
     const isValid = await bcrypt.compare(userLogin.password, userEntity.password)
 
     if(!isValid){
+      console.log("Senha inválida");
       res.status(400).json("Credenciais inválidas")
       return
     }
@@ -55,6 +60,7 @@ authRouter.post("/", async (req:Request, res:Response)=> {
     const token = await jwt.sign(payload, secretKey, {expiresIn: '1h'})
     res.status(200).json({ token: token })
   } catch(ex){
+    console.error("Erro interno:", ex)
     res.status(500).json("Não foi possível se conectar ao banco de dados")
     return
   }

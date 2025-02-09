@@ -34,7 +34,7 @@ class UserController {
       const salt = await bcrypt.genSalt(saltRounds)
       const senhaCriptografada = await bcrypt.hash(userBody.password, salt)
 
-      userBody.senhaCriptografada
+      userBody.password = senhaCriptografada
       await this.userRepository.save(userBody)
       res.status(201).json(userBody)
       return
