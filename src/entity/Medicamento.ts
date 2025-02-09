@@ -21,5 +21,7 @@ export class Medicamento {
   @JoinColumn()
   user: User;
 
+  @Column()
+  userId: number
 
 }
